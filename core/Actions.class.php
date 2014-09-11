@@ -47,8 +47,18 @@ abstract class Actions implements IRequest, IResponse, ISession
 	{
 		return $this->getRequest()->hasParameter($name);
 	}
+        public function getHeader($name)
+	{
+		return $this->getRequest()->getHeader($name);
+	}
 	
-	public function getRequestParameter($name)
+	public function hasHeader($name)
+	{
+		return $this->getRequest()->hasHeader($name);
+	}
+	public function getHeaders(){
+            return $this->getRequest()->getHeaders();
+        }	public function getRequestParameter($name)
 	{
 		return $this->getRequest()->getParameter($name);
 	}

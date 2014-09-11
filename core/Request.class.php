@@ -38,26 +38,54 @@ class Request
     protected $rawParameters = array();
     protected $method;
 	
+    protected $headers =array();
+    protected $files;
+	
 	public function __construct()
 	{
 		$this->parameters = array_merge($_GET, $_POST);
                 $this->rawParameters = array_merge($_GET, $_POST);
 		$this->secureParameters();
 		
+                $this->headers = apache_request_headers();
+                $this->files = $_FILES;
+		
 		$this->method = $this->defineMethod();
 	}
 	
 	public function getParameter($name)
-	{
+	{        if (isset($this->headers[$name])) {
+		
+		$headerValues = explode(',', $this->headers[$name]);
+		return (count($headerValues)==1) ? ($this->headers[$name]) : $headerValues;
+		}
+                    //comapre $_POST[$string];
+                    //The coreFw is encoding with html entities ???
+                if (isset($this->files[$name])) {
+                    return file_get_contents($this->files[$name]["tmp_name"]);
+
+                }
 		return (isset($this->parameters[$name])) ? $this->parameters[$name] : null;
 	}
 	
 	public function hasParameter($name)
 	{
-		return isset($this->parameters[$name]);
+		return (isset($this->parameters[$name]) || isset($this->headers[$name]) || isset($this->files[$name]));
 	}
+        public function getHeader($string){
 	
-	public function getParameters(){
+	    //could be improved using the x- prefix
+
+	     return isset($this->headers[$string]) ? $this->headers[$string] : false;
+	}
+        public function getHeaders(){
+            return $this->headers;
+        }
+	public function hasHeader($string){
+	    
+	     return isset($this->headers[$string]);
+	}
+		public function getParameters(){
 		return $this->parameters;
 	}
 	
