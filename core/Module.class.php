@@ -16,14 +16,14 @@
  * 
  * Copyright (c) 2006-2009 (original work) Public Research Centre Henri Tudor (under the project FP6-IST-PALETTE);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- * 
+ *               2014      (update and modification) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 /**
  * Module class
  * TODO Module class documentation.
  * 
- * @author J�r�me Bogaerts <jerome.bogaerts@tudor.lu> <jerome.bogaerts@gmail.com>
+ * @author Jérôme Bogaerts <jerome.bogaerts@tudor.lu> <jerome.bogaerts@gmail.com>
  */
 class Module extends Actions implements IFlowControl, IViewable
 {
@@ -32,12 +32,18 @@ class Module extends Actions implements IFlowControl, IViewable
 	 */
 	protected $renderer;
 	
-	public function forward($action, $controller, $extension = null)
+	public function forward($action, $controller = null, $extension = null, $params = array())
 	{
 		$flowController = new FlowController();
-		$flowController->forward($action, $controller, $extension = null);
+		$flowController->forward($action, $controller, $extension, $params);
 	}
 	
+	public function forwardUrl($url)
+	{
+		$flowController = new FlowController();
+		$flowController->forwardUrl($url);
+	}
+
 	public function redirect($url)
 	{
 		$flowController = new FlowController();

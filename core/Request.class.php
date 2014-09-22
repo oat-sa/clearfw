@@ -44,27 +44,29 @@ class Request
 	public function __construct()
 	{
 		$this->parameters = array_merge($_GET, $_POST);
-                $this->rawParameters = array_merge($_GET, $_POST);
+        $this->rawParameters = $this->parameters;
 		$this->secureParameters();
 		
-                $this->headers = apache_request_headers();
-                $this->files = $_FILES;
+        $this->headers = apache_request_headers();
+        $this->files = $_FILES;
 		
 		$this->method = $this->defineMethod();
 	}
 	
 	public function getParameter($name)
-	{        if (isset($this->headers[$name])) {
+	{        
+        if (isset($this->headers[$name])) {
 		
-		$headerValues = explode(',', $this->headers[$name]);
-		return (count($headerValues)==1) ? ($this->headers[$name]) : $headerValues;
+		    $headerValues = explode(',', $this->headers[$name]);
+		    return (count($headerValues)==1) ? ($this->headers[$name]) : $headerValues;
 		}
-                    //comapre $_POST[$string];
-                    //The coreFw is encoding with html entities ???
-                if (isset($this->files[$name])) {
-                    return file_get_contents($this->files[$name]["tmp_name"]);
 
-                }
+        //comapre $_POST[$string];
+        //The coreFw is encoding with html entities ???
+        if (isset($this->files[$name])) {
+            return file_get_contents($this->files[$name]["tmp_name"]);
+
+        }
 		return (isset($this->parameters[$name])) ? $this->parameters[$name] : null;
 	}
 	
@@ -72,21 +74,37 @@ class Request
 	{
 		return (isset($this->parameters[$name]) || isset($this->headers[$name]) || isset($this->files[$name]));
 	}
-        public function getHeader($string){
+
+    /**
+     * Append parameters, only for internal use. Must not be exposed into the Action/Module
+     * @param array $parameters
+     */
+    public function addParameters($parameters)
+    {
+        $this->parameters = array_merge($parameters, $this->parameters);
+        $this->rawParameters = $this->parameters;
+    }
+
+    public function getParameters()
+    {
+		return $this->parameters;
+	}
+
+    public function getHeader($string)
+    {
 	
 	    //could be improved using the x- prefix
+	    return isset($this->headers[$string]) ? $this->headers[$string] : false;
+	}
+        
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
 
-	     return isset($this->headers[$string]) ? $this->headers[$string] : false;
-	}
-        public function getHeaders(){
-            return $this->headers;
-        }
-	public function hasHeader($string){
-	    
+	public function hasHeader($string)
+    {
 	     return isset($this->headers[$string]);
-	}
-		public function getParameters(){
-		return $this->parameters;
 	}
 	
 	public function hasCookie($name)
