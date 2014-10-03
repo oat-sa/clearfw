@@ -46,9 +46,16 @@ class Request
 		$this->parameters = array_merge($_GET, $_POST);
         $this->rawParameters = $this->parameters;
 		$this->secureParameters();
-		
-        $this->headers = apache_request_headers();
-        $this->files = $_FILES;
+	
+	if (function_exists('apache_request_headers')) {
+		// apache
+		$this->headers = apache_request_headers();
+	} else {
+		// no headers on non apache
+		$this->headers = array();
+	}
+        
+	$this->files = $_FILES;
 		
 		$this->method = $this->defineMethod();
 	}
