@@ -51,8 +51,14 @@ class Request
 		// apache
 		$this->headers = apache_request_headers();
 	} else {
-		// no headers on non apache
 		$this->headers = array();
+		foreach ($_SERVER as $name => $value)
+		{
+		    if (substr($name, 0, 5) == 'HTTP_')
+		    {
+		        $this->headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+		    }
+		}
 	}
         
 	$this->files = $_FILES;
