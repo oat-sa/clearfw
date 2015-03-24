@@ -42,36 +42,36 @@ class Request
     protected $files;
 	
 	public function __construct()
-	{
-		$this->parameters = array_merge($_GET, $_POST);
+    {
+        $this->parameters = array_merge($_GET, $_POST);
         $this->rawParameters = $this->parameters;
-		$this->secureParameters();
-	
-	if (function_exists('apache_request_headers')) {
-		// apache
-		$this->headers = apache_request_headers();
-	} else {
-		$this->headers = array();
-		foreach ($_SERVER as $name => $value)
-		{
-		    if (substr($name, 0, 5) == 'HTTP_')
-		    {
-		        $this->headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
-		    }
-		}
-	}
+        $this->secureParameters();
         
-	$this->files = $_FILES;
-		
-		$this->method = $this->defineMethod();
+        if (function_exists('apache_request_headers')) {
+            // apache
+            $this->headers = array();
+            foreach (apache_request_headers() as $key => $value) {
+                $this->headers[strtolower($key)] = $value;
+            }
+        } else {
+            $this->headers = array();
+            foreach ($_SERVER as $name => $value) {
+                if (substr($name, 0, 5) == 'HTTP_') {
+                    $this->headers[str_replace(' ', '-', strtolower(str_replace('_', ' ', substr($name, 5))))] = $value;
+                }
+            }
+        }
+        
+        $this->files = $_FILES;
+        $this->method = $this->defineMethod();
 	}
 	
 	public function getParameter($name)
 	{        
-        if (isset($this->headers[$name])) {
+        if (isset($this->headers[strtolower($name)])) {
 		
-		    $headerValues = explode(',', $this->headers[$name]);
-		    return (count($headerValues)==1) ? ($this->headers[$name]) : $headerValues;
+		    $headerValues = explode(',', $this->headers[strtolower($name)]);
+		    return (count($headerValues)==1) ? reset($headerValues) : $headerValues;
 		}
 
         //comapre $_POST[$string];
@@ -85,7 +85,7 @@ class Request
 	
 	public function hasParameter($name)
 	{
-		return (isset($this->parameters[$name]) || isset($this->headers[$name]) || isset($this->files[$name]));
+		return (isset($this->parameters[$name]) || isset($this->headers[strtolower($name)]) || isset($this->files[$name]));
 	}
 
     /**
@@ -107,7 +107,7 @@ class Request
     {
 	
 	    //could be improved using the x- prefix
-	    return isset($this->headers[$string]) ? $this->headers[$string] : false;
+	    return isset($this->headers[strtolower($string)]) ? $this->headers[strtolower($string)] : false;
 	}
         
     public function getHeaders()
@@ -117,7 +117,7 @@ class Request
 
 	public function hasHeader($string)
     {
-	     return isset($this->headers[$string]);
+	     return isset($this->headers[strtolower($string)]);
 	}
 	
 	public function hasCookie($name)
