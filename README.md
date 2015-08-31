@@ -1,10 +1,8 @@
-clearfw
-=======
+# clearfw
 
 a php5 mvc framework
 
-Contributors
-========
+## Contributors
 
 * Jérôme Bogaerts 
 * Joel Bout 
