@@ -252,7 +252,7 @@ class Request
  	
  	protected function secureParameters()
  	{
- 		$errorManager = Error::getInstance();
+ 		$errorManager = CfwError::getInstance();
  		
  		foreach ($this->parameters as $key => &$param)
  			$param = $errorManager->secure($param, $key);

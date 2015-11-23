@@ -43,7 +43,7 @@
  * error handling
  * FIXME: refactoring necessaire avec la classe TestVariables
  */
-class Error {
+class CfwError {
 
 	/**
 	 * This is the instance of this singleton class
@@ -97,7 +97,7 @@ class Error {
      */
     public static function getInstance() {
     	if (!isset(self::$instance)) {
-			self::$instance = new Error();
+			self::$instance = new self();
 		}
 		return self::$instance;
     }
