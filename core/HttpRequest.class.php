@@ -79,7 +79,7 @@ class HttpRequest {
     	$this->action		= null;
     	$this->args			= array();
 
-    	$this->error		= Error::getInstance();
+    	$this->error		= CfwError::getInstance();
 
     	$this->addGetParameters();
     	$this->addPostParameters();
