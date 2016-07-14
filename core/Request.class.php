@@ -222,14 +222,10 @@ class Request
  	
  	private function defineMethod()
  	{	
- 		$methodAsString = $_SERVER['REQUEST_METHOD'];
+ 		$methodAsString = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '';
  		
  		switch ($methodAsString)
  		{
- 			case 'GET':
- 				$method = self::HTTP_GET;
- 				break;
- 			
  			case 'POST':
  				$method = self::HTTP_POST;
  				break;
@@ -245,6 +241,10 @@ class Request
  			case 'HEAD':
  				$method = self::HTTP_HEAD;
  				break;
+			case 'GET':
+			default:
+				$method = self::HTTP_GET;
+				break;
  		}
  		
  		return $method;
