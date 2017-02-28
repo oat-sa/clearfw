@@ -93,7 +93,7 @@ class l10n
 		}
 		else
 		{
-			common_Logger::w('loaded NO i18n file '.$file);
+			common_Logger::d('loaded NO i18n file '.$file);
 			return false;
 		}
 	}
