@@ -24,16 +24,18 @@
  * Request class
  * TODO Request class documentation.
  * 
- * @author J�r�me Bogaerts <jerome.bogaerts@tudor.lu> <jerome.bogaerts@gmail.com>
+ * @author Jérôme Bogaerts <jerome.bogaerts@tudor.lu> <jerome.bogaerts@gmail.com>
  */
 class Request
 {
-    const HTTP_GET = 'GET';
-    const HTTP_POST = 'POST';
-    const HTTP_PUT ='PUT';
-    const HTTP_DELETE = 'DELETE';
-    const HTTP_HEAD = 'HEAD';
-        
+    const HTTP_GET     = 'GET';
+    const HTTP_POST    = 'POST';
+    const HTTP_PUT     = 'PUT';
+    const HTTP_DELETE  = 'DELETE';
+    const HTTP_HEAD    = 'HEAD';
+    const HTTP_OPTIONS = 'OPTIONS';
+    const HTTP_PATCH   = 'PATCH';
+
     protected $parameters = array();
     protected $rawParameters = array();
     protected $method;
@@ -158,8 +160,18 @@ class Request
  	public function isHead()
  	{
  		return $this->getMethod() == self::HTTP_HEAD;
+        }
+
+ 	public function isOptions()
+ 	{
+ 		return $this->getMethod() == self::HTTP_OPTIONS;
+        }
+
+ 	public function isPatch()
+ 	{
+ 		return $this->getMethod() == self::HTTP_PATCH;
  	}
- 	
+
  	public function getUserAgent()
  	{
  		return $_SERVER['USER_AGENT'];
@@ -223,7 +235,6 @@ class Request
  	private function defineMethod()
  	{	
  		$methodAsString = $_SERVER['REQUEST_METHOD'];
- 		
  		switch ($methodAsString)
  		{
  			case 'GET':
@@ -245,8 +256,13 @@ class Request
  			case 'HEAD':
  				$method = self::HTTP_HEAD;
  				break;
+ 			case 'OPTIONS':
+ 				$method = self::HTTP_OPTIONS;
+ 				break;
+ 			case 'PATCH':
+ 				$method = self::HTTP_PATCH;
+ 				break;
  		}
- 		
  		return $method;
  	}
  	
