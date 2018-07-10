@@ -53,10 +53,11 @@ class l10n
 	*
 	* Create global arrays for L10N stuff. Should be called before any work
 	* with other methods.
+	* @param array $translations translations as $key => $string array
 	*/
-	public static function init()
+	public static function init($translations = [])
 	{
-		$GLOBALS['__l10n'] = array();
+		$GLOBALS['__l10n'] = $translations;
 		$GLOBALS['__l10n_files'] = array();
 	}
 	
