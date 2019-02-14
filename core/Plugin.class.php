@@ -236,7 +236,7 @@ class Plugin {
 		 		while( false !== ($file = readdir($root)))
 					if(!is_dir($file)
 					&& !in_array($file, Plugin::$folderBlackList)
-					&& ereg('\.class\.php$', $file) ){
+					&& preg_match('/\.class\.php$/', $file) ){
 						if(Plugin::$debug) echo '<br/>Plugin::getClassesFromFile :  ' . $filePath . $file . ' [OK]';
 						require_once $filePath . $file;
 					}

@@ -303,7 +303,7 @@ class CfwError {
   	 * @param	string		$pMessage			Message
   	 */
   	function mailtest($pEmail, $pName, $pMessage = "", $i = "") {
-  		if (($pEmail != "") && !eregi("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@([0-9a-z](-?[0-9a-z])*\\.)+[a-z]{2}([zmuvtg]|fo|me)?$", $pEmail)) {
+  		if (($pEmail != "") && !preg_match("/^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@([0-9a-z](-?[0-9a-z])*\\.)+[a-z]{2}([zmuvtg]|fo|me)?$/i", $pEmail)) {
       		$this->add($pEmail, $pName, $pMessage, $this->style, $i);
       		$this->nbError++;
     	}
