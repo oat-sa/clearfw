@@ -262,6 +262,8 @@ class Request
  			case 'PATCH':
  				$method = self::HTTP_PATCH;
  				break;
+            default:
+                $method = $methodAsString;
  		}
  		return $method;
  	}
