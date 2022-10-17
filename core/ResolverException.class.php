@@ -32,5 +32,10 @@ class ResolverException extends Exception
 	{
 		parent::__construct($message);
 	}
+
+    public function getSeverity()
+    {
+        return common_Logger::INFO_LEVEL;
+    }
 }
 ?>
